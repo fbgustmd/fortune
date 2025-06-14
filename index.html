@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>오하아사 별자리 운세</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-grad: linear-gradient(135deg, #dbeafe 0%, #67e8f9 100%);
+      --card-grad: linear-gradient(130deg, #f0f6ff 60%, #e0f2fe 100%);
+      --accent1: #3b82f6;
+      --accent2: #38bdf8;
+      --accent3: #06b6d4;
+      --accent4: #0ea5e9;
+      --accent5: #bae6fd;
+    }
+    body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      background: var(--main-grad);
+      font-family: 'Gowun Dodum', 'Malgun Gothic', Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      animation: bgMove 16s ease-in-out infinite alternate;
+    }
+    @keyframes bgMove {
+      0% {background-position: 0% 50%;}
+      100% {background-position: 100% 50%;}
+    }
+    .card {
+      background: var(--card-grad);
+      border-radius: 2.5em;
+      box-shadow: 0 10px 40px #38bdf855, 0 2px 4px #0001;
+      padding: 2.1em 1em 1.7em 1em;
+      max-width: 420px;
+      width: 100vw;
+      margin: 2em 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .18s;
+      box-sizing: border-box;
+    }
+    .card:before {
+      content: "";
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, #bae6fd 60%, transparent 80%);
+      z-index: 0;
+      opacity: 0.20;
+      animation: pulse 3s infinite alternate;
+    }
+    @keyframes pulse { to { opacity: 0.38; } }
+    .horoscope-icon {
+      font-size: 2.6em;
+      margin-bottom: 0.13em;
+      filter: drop-shadow(0 2px 10px #38bdf855);
+      transition: transform .3s;
+      animation: wiggle 2.5s infinite ease-in-out;
+    }
+    @keyframes wiggle {
+      0%,100% {transform: rotate(-6deg);}
+      50% {transform: rotate(7deg);}
+    }
+    h1 {
+      font-family: 'Jua', cursive;
+      font-size: 1.4em;
+      margin: 0 0 .2em 0;
+      letter-spacing: .03em;
+      color: var(--accent4);
+      text-shadow: 1px 2px 10px #fff8;
+    }
+    .intro-message {
+      background: linear-gradient(90deg, #dbeafe 60%, #e0f2fe 100%);
+      border-radius: 1.5em;
+      padding: 0.8em 1.2em 0.8em 1.2em;
+      margin-bottom: 1.1em;
+      color: #3384be;
+      font-family: 'Gowun Dodum', cursive;
+      font-size: 0.95em;
+      box-shadow: 0 2px 12px #38bdf822;
+      line-height: 1.7;
+      text-align:center;
+    }
+    .intro-message .intro-emoji {
+      font-size: 1.05em;
+      color: #38bdf8;
+      display: inline-block;
+      margin-top: 0.18em;
+    }
+    .input-group {
+      margin: 1.1em 0 1em 0;
+      display: flex; flex-direction: column; gap: 0.7em;
+    }
+    label {
+      text-align: left;
+      margin-bottom: 0.15em;
+      font-weight: bold;
+      color: var(--accent3);
+      font-size: 0.98em;
+      letter-spacing: .01em;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      border-radius: 1.2em;
+      border: 1.5px solid #38bdf855;
+      padding: 0.6em 1.1em;
+      font-size: 1.03em;
+      background: #fff9;
+      transition: border .16s;
+      outline: none;
+      box-sizing: border-box;
+    }
+    select:focus, input[type="text"]:focus {
+      border: 2px solid var(--accent1);
+      background: #f0f9ff;
+    }
+    .birth-row {
+      display: flex;
+      gap: 0.7em;
+      align-items: center;
+    }
+    .birth-row select {
+      width: 48%;
+      min-width: 0;
+    }
+    .btn-main {
+      background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 90%);
+      color: #fff;
+      font-family: 'Jua', cursive;
+      font-size: 1.13em;
+      border: none;
+      border-radius: 2em;
+      padding: 0.65em 0;
+      margin-top: 0.4em;
+      box-shadow: 0 2px 10px #38bdf822;
+      cursor: pointer;
+      transition: transform .08s, box-shadow .2s, background .19s;
+      width: 100%;
+      outline: none;
+    }
+    .btn-main:active {
+      transform: scale(0.96);
+      box-shadow: 0 1px 3px #38bdf822;
+      background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 90%);
+    }
+    .result {
+      margin-top: 1.2em;
+      padding: 1.4em 0.8em 1em 0.8em;
+      background: linear-gradient(125deg, #bae6fd22 40%, #fff0 100%);
+      border-radius: 1.2em;
+      color: #222;
+      font-size: 1.00em;
+      box-shadow: 0 1px 12px #0ea5e911 inset;
+      position: relative;
+      animation: fadein .8s;
+    }
+    @keyframes fadein {from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}
+    }
+    .rank, .lucky {
+      font-weight: bold;
+      background: linear-gradient(90deg, #3b82f6 40%, #06b6d4 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .error {
+      color: var(--accent1);
+      font-family: 'Jua', cursive;
+      margin-bottom: 0.18em;
+      min-height: 1.3em;
+      font-size: 0.98em;
+      text-align: center;
+      letter-spacing: .02em;
+    }
+    .btn-row {
+      margin-top: 0.9em;
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-row button {
+      width: 31.5%; font-size: 0.99em; padding: 0.55em 0;
+      border-radius: 1.3em; border: none;
+      background: var(--accent1);
+      color: #fff; cursor: pointer;
+      font-family: 'Jua', cursive;
+      transition: background .12s, transform .09s;
+      margin-bottom: 0.3em;
+    }
+    .btn-row button:active {background:var(--accent3); transform:scale(0.97);}
+    .copy-alert {
+      color: var(--accent3);
+      text-align: right;
+      font-size: 0.93em;
+      margin-top: 0.3em;
+      min-height: 1em;
+      font-family: 'Gowun Dodum', cursive;
+    }
+    @media (max-width: 520px) {
+      .card {padding:0.9em 0.2em;}
+      .result {font-size:0.97em; padding:0.8em 0.3em;}
+      h1 {font-size:1.08em;}
+      .horoscope-icon {font-size:1.45em;}
+      .intro-message {font-size:0.93em;}
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="intro-message">
+      별자리에 따라, 날짜에 따라<br>
+      매일매일 “오직 나만의” 운세를 만나요!
+      <br><br>
+      오늘도 오하아사와 함께 반짝이는 하루 보내요!<br>
+      <span class="intro-emoji">(っ◔◡◔)っ ★</span>
+    </div>
+    <div class="horoscope-icon" id="mainIcon">🔮</div>
+    <h1>오하아사 별자리 운세</h1>
+    <div id="input-section">
+      <form onsubmit="event.preventDefault(); showHoroscope();">
+        <div class="input-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" placeholder="이름을 입력하세요" maxlength="8"
+            onfocus="this.value=''; clearResult();">
+          <label for="birth">생일 (월/일)</label>
+          <div class="birth-row">
+            <select id="birth-month" onchange="updateBirthDays();">
+              <option value="">월</option>
+              <option value="01">1월</option>
+              <option value="02">2월</option>
+              <option value="03">3월</option>
+              <option value="04">4월</option>
+              <option value="05">5월</option>
+              <option value="06">6월</option>
+              <option value="07">7월</option>
+              <option value="08">8월</option>
+              <option value="09">9월</option>
+              <option value="10">10월</option>
+              <option value="11">11월</option>
+              <option value="12">12월</option>
+            </select>
+            <select id="birth-day">
+              <option value="">일</option>
+              <!-- 일(day)은 JS에서 동적으로 생성 -->
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-main">✨ 오늘의 운세 보기</button>
+        <div id="error" class="error"></div>
+      </form>
+    </div>
+    <div id="result-section" style="display:none;">
+      <div id="result" class="result"></div>
+      <div class="btn-row">
+        <button onclick="copyResult()">🔗 복사</button>
+        <button onclick="copyLink()">🔗 공유 링크</button>
+        <button onclick="resetForm()">↩ 처음으로</button>
+      </div>
+      <div id="copy-alert" class="copy-alert"></div>
+    </div>
+  </div>
+  <script>
+    // 일(day) 드롭다운 월에 맞게 자동 세팅
+    function updateBirthDays() {
+      const month = document.getElementById('birth-month').value;
+      const daySel = document.getElementById('birth-day');
+      const prev = daySel.value;
+      let days = 31;
+      if(month==="02") days = 29; // 윤년 기준, 29일까지 허용
+      else if(["04","06","09","11"].includes(month)) days = 30;
+      let opts = '<option value="">일</option>';
+      for(let i=1; i<=days; ++i) {
+        const val = i.toString().padStart(2, '0');
+        opts += `<option value="${val}"${val===prev?' selected':''}>${i}일</option>`;
+      }
+      daySel.innerHTML = opts;
+    }
+    // 최초 진입시 1~31일 세팅
+    window.onload = function(){
+      updateBirthDays();
+    };
+
+    const zodiacIcons = {
+      "염소자리": "🐐",
+      "물병자리": "🏺",
+      "물고기자리": "🐟",
+      "양자리": "🐏",
+      "황소자리": "🐂",
+      "쌍둥이자리": "👯",
+      "게자리": "🦀",
+      "사자자리": "🦁",
+      "처녀자리": "🌾",
+      "천칭자리": "⚖️",
+      "전갈자리": "🦂",
+      "사수자리": "🏹",
+      "알 수 없음": "🔮"
+    };
+    function clearResult() {
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("error").textContent = "";
+      document.getElementById("copy-alert").innerText = "";
+      document.getElementById("mainIcon").textContent = "🔮";
+    }
+    function isValidDate(mm, dd) {
+      if (!mm || !dd) return false;
+      const daysInMonth = {
+        "01": 31, "02": 29, "03": 31, "04": 30, "05": 31, "06": 30,
+        "07": 31, "08": 31, "09": 30, "10": 31, "11": 30, "12": 31
+      };
+      return 1 <= parseInt(dd,10) && parseInt(dd,10) <= (daysInMonth[mm]||31);
+    }
+    function getZodiac(month, day) {
+      const zodiacSigns = [
+        ["염소자리", [12, 22], [1, 19]],
+        ["물병자리", [1, 20], [2, 18]],
+        ["물고기자리", [2, 19], [3, 20]],
+        ["양자리", [3, 21], [4, 19]],
+        ["황소자리", [4, 20], [5, 20]],
+        ["쌍둥이자리", [5, 21], [6, 21]],
+        ["게자리", [6, 22], [7, 22]],
+        ["사자자리", [7, 23], [8, 22]],
+        ["처녀자리", [8, 23], [9, 23]],
+        ["천칭자리", [9, 24], [10, 22]],
+        ["전갈자리", [10, 23], [11, 22]],
+        ["사수자리", [11, 23], [12, 24]],
+      ];
+      for (const [sign, start, end] of zodiacSigns) {
+        if ((month === start[0] && day >= start[1]) ||
+            (month === end[0] && day <= end[1])) {
+          return sign;
+        }
+      }
+      return "알 수 없음";
+    }
+    function cyrb53(str, seed = 0) {
+      let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+      for(let i=0, ch; i<str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+          Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+          Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+      return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    }
+    function getTodayRankList() {
+      const base = [
+        "염소자리", "물병자리", "물고기자리", "양자리", "황소자리", "쌍둥이자리",
+        "게자리", "사자자리", "처녀자리", "천칭자리", "전갈자리", "사수자리"
+      ];
+      const today = (new Date()).toISOString().slice(0,10);
+      const seed = cyrb53(today, 33333);
+      const rnd = mulberry32(seed);
+      const arr = [...base];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(rnd() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function pickSeededValue(pool, key, offset=0) {
+      const seed = cyrb53(key, 12345 + offset);
+      return pool[seed % pool.length];
+    }
+    function getLuckyNumber(key) {
+      const seed = cyrb53(key, 8899);
+      return 1 + (seed % 99);
+    }
+    function mulberry32(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      }
+    }
+    const horoscopeMessages = [
+      "🍀 행운이 깃드는 하루! 오늘은 왜인지 좋은 일만이 가득할 것 같아요!",
+      "🦋 갑자기 사랑이 싹틀지도... 새로운 인연을 만나요!",
+      "🌈 고민이 해결될 지도 몰라요. 오늘은 누군가에게 이야기를 털어놓아보아요.",
+      "✨ 반짝이는 아이디어가 샘솟아요! 엄청난 게 나올 것 같아요. 당장 책상 앞으로!",
+      "💡 오늘은 한 번 도전해봐도 좋아요! 망설이던 일이 있다면 당장 고고!",
+      "🎉 원하는 일이 이뤄질지도? 맛있는 거 먹으며 기다려봅시다.",
+      "☁️ 잠깐 쉬어가도 괜찮아요. 내일을 위해 좀 쉴까요?",
+      "🚀 금전운이 있어요. 오늘이 기회다! 이 기회를 놓치지 말아요",
+      "⚽ 운동하면 더 좋은 하루! 활기차게 움직여봅시다!",
+      "⭐ 자신감을 가져보세요! 오늘은 다 잘 될 것 같아요",
+      "🌸 마음이 편안해지는 하루! 오늘은 집에 가만히 누워 있는 건 어때요?"
+    ];
+    const luckyItems = [
+      "샌들", "손목 시계", "텀블러", "수첩", "볼펜", "볼캡 모자", "손선풍기", "책가방",
+      "반지", "안경", "줄 이어폰", "청바지", "칫솔", "아이스 아메리카노", "축구공",
+      "팔찌", "껌", "소설 책", "휴지", "쿠키"
+    ];
+    const luckyColors = [
+      "네이비 블루", "민트", "스카이 블루", "딥 그린", "블랙 블루", "흰색", "핑크",
+      "주황", "갈색", "코발트", "라이트 그레이", "올리브 그린", "아쿠아 블루", "차콜", "검정", "회색"
+    ];
+    function showHoroscope() {
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("error").textContent = "";
+      document.getElementById("copy-alert").innerText = "";
+
+      const name = document.getElementById("name").value.trim();
+      let mm = document.getElementById('birth-month').value;
+      let dd = document.getElementById('birth-day').value;
+
+      if(!name) {
+        document.getElementById("error").textContent = "이름을 입력해주세요.";
+        return;
+      }
+      if(!isValidDate(mm,dd)) {
+        document.getElementById("error").textContent = "유효한 생일(월/일)을 선택해주세요.";
+        return;
+      }
+
+      const month = Number(mm), day = Number(dd);
+      const zodiac = getZodiac(month, day);
+      const today = (new Date()).toISOString().slice(0,10);
+      const key = `${today}-${zodiac}`;
+      const message = pickSeededValue(horoscopeMessages, key, 0);
+      const item = pickSeededValue(luckyItems, key, 1);
+      const color = pickSeededValue(luckyColors, key, 2);
+      const number = getLuckyNumber(key);
+      const todayRankList = getTodayRankList();
+      const rank = todayRankList.indexOf(zodiac) !== -1 ? (todayRankList.indexOf(zodiac) + 1) : "순위 없음";
+
+      document.getElementById("mainIcon").textContent = zodiacIcons[zodiac] || "🔮";
+      document.getElementById("input-section").style.display = "none";
+      document.getElementById("result-section").style.display = "";
+      document.getElementById("result").innerHTML = `
+        <div style="font-size:1.1em;letter-spacing:.02em;margin-bottom:0.4em;">
+          <b>${name}님의 별자리 운세 <span style="font-size:0.82em; color:#0ea5e999;">${today}</span></b>
+        </div>
+        <div style="font-size:1.4em; margin-bottom:.20em;">
+          ${zodiacIcons[zodiac] || "🔮"} <b>${zodiac}</b>
+        </div>
+        <span class="rank">🏆 오늘의 별자리 순위: ${rank}위</span><br>
+        <div style="margin: 0.4em 0 0.55em 0;">
+          📝 오늘의 메시지:<br> <span>${message}</span>
+        </div>
+        <span class="lucky">🎁 행운의 아이템: ${item}</span> <br>
+        <span class="lucky">🎨 행운의 색상: ${color}</span> <br>
+        <span class="lucky">🔢 행운의 숫자: ${number}</span>
+      `;
+    }
+    function resetForm() {
+      document.getElementById("input-section").style.display = "";
+      document.getElementById("result-section").style.display = "none";
+      document.getElementById("name").value = "";
+      document.getElementById("birth-month").value = "";
+      updateBirthDays();
+      clearResult();
+    }
+    function copyResult() {
+      const resultDiv = document.getElementById("result");
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = resultDiv.innerHTML;
+      let text = tempDiv.innerText || tempDiv.textContent;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+          document.getElementById("copy-alert").innerText = "복사 완료!";
+        }, function() {
+          document.getElementById("copy-alert").innerText = "복사 실패. 수동으로 복사해주세요.";
+        });
+      } else {
+        let textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          document.getElementById("copy-alert").innerText = "복사 완료!";
+        } catch {
+          document.getElementById("copy-alert").innerText = "복사 실패. 수동으로 복사해주세요.";
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+    function copyLink() {
+      const url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+          document.getElementById("copy-alert").innerText = "링크 복사 완료!";
+        }, function() {
+          document.getElementById("copy-alert").innerText = "링크 복사 실패. 수동으로 복사해주세요.";
+        });
+      } else {
+        let textarea = document.createElement("textarea");
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          document.getElementById("copy-alert").innerText = "링크 복사 완료!";
+        } catch {
+          document.getElementById("copy-alert").innerText = "링크 복사 실패. 수동으로 복사해주세요.";
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+  </script>
+</body>
+</html>
